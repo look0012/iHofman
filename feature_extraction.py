@@ -2,7 +2,7 @@ import numpy as np
 from tqdm import tqdm
 
 def GenerateEmbeddingFeature(SequenceList, EmbeddingList, PaddingLength):
-    """生成嵌入特征矩阵"""
+    """Generate an embedded feature matrix"""
     SampleFeature = []
     for counter in tqdm(range(len(SequenceList)), desc="Generating Embedding Feature"):
         PairFeature = [SequenceList[counter][0]]
@@ -20,7 +20,7 @@ def GenerateEmbeddingFeature(SequenceList, EmbeddingList, PaddingLength):
     return SampleFeature
 
 def GenerateSampleFeature(InteractionList, EmbeddingFeature1, EmbeddingFeature2):
-    """生成样本特征"""
+    """Generated sample feature"""
     SampleFeature1, SampleFeature2 = [], []
     for counter in tqdm(range(len(InteractionList)), desc="Generating Sample Feature"):
         Pair1, Pair2 = InteractionList[counter]
@@ -37,7 +37,7 @@ def GenerateSampleFeature(InteractionList, EmbeddingFeature1, EmbeddingFeature2)
     return SampleFeature1.reshape(SampleFeature1.shape[0], SampleFeature1.shape[1], SampleFeature1.shape[2], 1), SampleFeature2.reshape(SampleFeature2.shape[0], SampleFeature2.shape[1], SampleFeature2.shape[2], 1)
 
 def GenerateBehaviorFeature(InteractionPair, NodeBehavior):
-    """生成行为特征"""
+    """Generative behavior feature"""
     SampleFeature1, SampleFeature2 = [], []
     for i in tqdm(range(len(InteractionPair)), desc="Generating Behavior Feature"):
         Pair1, Pair2 = InteractionPair[i]

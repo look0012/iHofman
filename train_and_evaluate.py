@@ -4,26 +4,26 @@ import csv
 import os
 
 def train_autoencoder(autoencoder, x_train, x_validation):
-    """训练自编码器"""
+    """Training autoencoder"""
     autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
     history = autoencoder.fit(x_train, x_train, epochs=20, batch_size=128, validation_data=(x_validation, x_validation))
     return history
 
 def calculate_aupr(y_true, y_scores):
-    """计算AUPR值"""
+    """Calculate the AUPR value"""
     return average_precision_score(y_true, y_scores)
 
 
 def StorFile(data, fileName):
-    # 确保文件夹存在
+
     result_folder = 'result'
     if not os.path.exists(result_folder):
         os.makedirs(result_folder)
 
-    # 将文件路径与文件名合并，保存到 result 文件夹中
+
     file_path = os.path.join(result_folder, fileName)
 
-    # 写入 CSV 文件
+
     with open(file_path, "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(data)
@@ -31,7 +31,7 @@ def StorFile(data, fileName):
     return
 
 def evaluate_classifier(clf, name, X_test, y_test):
-    """评估分类器性能"""
+    """Evaluate classifier performance"""
     y_pred = clf.predict(X_test)
     y_proba = clf.predict_proba(X_test)[:, 1]
     accuracy = accuracy_score(y_test, y_pred)
@@ -44,7 +44,7 @@ def evaluate_classifier(clf, name, X_test, y_test):
     return auc, aupr
 
 def TestOutput(classifier, name, X_test, y_test, fold_index):
-    """测试输出分类器的结果"""
+    """Test the results of the output classifier"""
     ModelTestOutput = classifier.predict_proba(X_test)
     LabelPredictionProb = [[y_test[i], ModelTestOutput[i][1]] for i in range(len(y_test))]
     LabelPrediction = [[y_test[i], 1 if ModelTestOutput[i][1] > 0.5 else 0] for i in range(len(y_test))]

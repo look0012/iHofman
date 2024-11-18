@@ -14,7 +14,7 @@ from joblib import dump
 import numpy as np
 
 def MyLabel(Sample):
-    """生成标签"""
+    """Generate tag"""
     label = [1] * (len(Sample) // 2) + [0] * (len(Sample) // 2)
     return label
 
@@ -111,8 +111,7 @@ def main():
         x_test_1_Encoded = encoder1.predict(x_test_1_Attribute)
         x_test_2_Encoded = encoder2.predict(x_test_2_Attribute)
 
-        # 使用注意力模型进行特征融合
-        # 创建注意力模型
+
         behavior_shape = (x_train_1_Behavior.shape[1],)
         attention_model = create_attention_model(x_train_1_Encoded.shape[1:], x_train_2_Encoded.shape[1:],
                                                  behavior_shape)

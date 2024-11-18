@@ -3,7 +3,7 @@ from tqdm import tqdm
 import os
 
 def ReadMyCsv1(SaveList, fileName):
-    """读取CSV文件，并将其存储在SaveList中"""
+    """Read the CSV file and store it in SaveList"""
     with open(fileName, 'r') as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in tqdm(csv_reader, desc=f"Reading {fileName}"):
@@ -11,7 +11,7 @@ def ReadMyCsv1(SaveList, fileName):
     return
 
 def ReadMyCsv3(SaveList, fileName):
-    """读取CSV文件并尝试将数据转换为浮点数格式"""
+    """Read the CSV file and try to convert the data to floating-point format"""
     with open(fileName, 'r') as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in tqdm(csv_reader, desc=f"Reading {fileName}"):

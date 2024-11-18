@@ -3,7 +3,7 @@ from keras.models import Model
 from keras.layers import Input, Dense, Flatten, Reshape, Concatenate, Multiply
 
 def create_sae_model(input_shape):
-    """创建自编码器模型"""
+    """Create an autoencoder model"""
     input_img = Input(shape=input_shape)
     x = Flatten()(input_img)
 
@@ -22,13 +22,13 @@ def create_sae_model(input_shape):
     return autoencoder, encoder
 
 def attention_3d_block(inputs):
-    """定义3D注意力模块"""
+    """Define 3D attention modules"""
     a = Dense(inputs.shape[-1], activation='softmax')(inputs)
     output_attention_mul = Multiply()([inputs, a])
     return output_attention_mul
 
 def create_attention_model(input_shape_1, input_shape_2, behavior_shape):
-    """创建包含注意力机制的融合模型"""
+    """Create a fusion model that includes attention mechanisms"""
     input_1 = Input(shape=input_shape_1)
     input_2 = Input(shape=input_shape_2)
     behavior_input_1 = Input(shape=behavior_shape)
