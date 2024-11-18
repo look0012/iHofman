@@ -24,10 +24,10 @@ from sklearn.metrics import precision_recall_curve
 from inspect import signature
 
 
-# 定义函数
+
 def ReadMyCsv(SaveList, fileName):
     csv_reader = csv.reader(open(fileName))
-    for row in csv_reader:  # 把每个rna疾病对加入OriginalData，注意表头
+    for row in csv_reader:
         for i in range(len(row)):
             row[i] = float(row[i])
         SaveList.append(row)
@@ -44,7 +44,7 @@ def MyEnlarge(x0, y0, width, height, x1, y1, times, mean_fpr, mean_tpr, thicknes
         import matplotlib.pyplot as plt
         import numpy as np
 
-        x1 = np.linspace(x0, x0, num=20)  # 生成列的横坐标，横坐标都是x0，纵坐标变化
+        x1 = np.linspace(x0, x0, num=20)
         y1 = np.linspace(y0, y0, num=20)
         xk = np.linspace(x0, x0 + width, num=20)
         yk = np.linspace(y0, y0 + height, num=20)
@@ -57,24 +57,24 @@ def MyEnlarge(x0, y0, width, height, x1, y1, times, mean_fpr, mean_tpr, thicknes
             ykn.append(y1[counter] + height)
             counter = counter + 1
 
-        plt.plot(x1, yk, color='k', linestyle=':', lw=1, alpha=1)  # 左
-        plt.plot(xk, y1, color='k', linestyle=':', lw=1, alpha=1)  # 下
-        plt.plot(xkn, yk, color='k', linestyle=':', lw=1, alpha=1)  # 右
-        plt.plot(xk, ykn, color='k', linestyle=':', lw=1, alpha=1)  # 上
+        plt.plot(x1, yk, color='k', linestyle=':', lw=1, alpha=1)
+        plt.plot(xk, y1, color='k', linestyle=':', lw=1, alpha=1)
+        plt.plot(xkn, yk, color='k', linestyle=':', lw=1, alpha=1)
+        plt.plot(xk, ykn, color='k', linestyle=':', lw=1, alpha=1)
 
         return
-    # 画虚线框
+
     width2 = times * width
     height2 = times * height
     MyFrame(x0, y0, width, height)
     MyFrame(x1, y1, width2, height2)
 
-    # 连接两个虚线框
+
     xp = np.linspace(x0 + width, x1, num=20)
     yp = np.linspace(y0, y1 + height2, num=20)
     plt.plot(xp, yp, color='k', linestyle=':', lw=1, alpha=1)
 
-    # 小虚框内各点坐标
+
     XDottedLine = []
     YDottedLine = []
     counter = 0
@@ -84,8 +84,7 @@ def MyEnlarge(x0, y0, width, height, x1, y1, times, mean_fpr, mean_tpr, thicknes
             YDottedLine.append(mean_tpr[counter])
         counter = counter + 1
 
-    # 画虚线框内的点
-    # 把小虚框内的任一点减去小虚框左下角点生成相对坐标，再乘以倍数（4删）加大虚框左下角点
+
     counter = 0
     while counter < len(XDottedLine):
         XDottedLine[counter] = (XDottedLine[counter] - x0) * times + x1
@@ -111,7 +110,7 @@ def MyConfusionMatrix(y_real,y_predict):
     Spec = TN / (TN + FP)
     Prec = TP / (TP + FP)
     MCC = (TP * TN - FP * FN) / math.sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
-    # 分母可能出现0，需要讨论待续
+
     print('Acc:', round(Acc, 4))
     print('Sen:', round(Sen, 4))
     print('Spec:', round(Spec, 4))
@@ -165,16 +164,16 @@ def MyStd(result):
     MeanList = []
     counter = 0
     while counter < len(NewMatrix):
-        # std
+
         arr_std = np.std(NewMatrix[counter], ddof=1)
         StdList.append(arr_std)
-        # mean
+
         arr_mean = np.mean(NewMatrix[counter])
         MeanList.append(arr_mean)
         counter = counter + 1
     result.append(MeanList)
     result.append(StdList)
-    # 换算成百分比制
+
     counter = 0
     while counter < len(result):
         counter1 = 0
@@ -190,7 +189,7 @@ mean_fpr = np.linspace(0, 1, 1000)
 i = 0
 colorlist = ['red', 'gold', 'orange', 'green', 'blue', 'purple']
 
-# 用于保存混淆矩阵
+
 AllResult = []
 Ps = []
 Rs = []
@@ -200,14 +199,14 @@ mean_R = np.linspace(0, 1, 1000)
 counter0 = 0
 while counter0 < 5:
     print(i)
-    # 读取文件
+
     RealAndPrediction = []
     RealAndPredictionProb = []
     RAPName = 'MLPRealAndPredictionA+B_fold_' + str(counter0) + '.csv'
     RAPNameProb = 'MLPRealAndPredictionProbA+B_fold_' + str(counter0) + '.csv'
     ReadMyCsv(RealAndPrediction, RAPName)
     ReadMyCsv(RealAndPredictionProb, RAPNameProb)
-    # 生成Real和Prediction
+
     Real = []
     Prediction = []
     PredictionProb = []
@@ -223,9 +222,7 @@ while counter0 < 5:
 
     Ps.append(interp(mean_R, precision, recall))
     RPs.append(average_precision)
-    # 阶梯状
-    # plt.step(recall, precision, color=colorlist[i], alpha=0.4删, where='post')
-    # 弧线
+
     plt.plot(recall, precision, lw=1.5, alpha=0.8, color=colorlist[i],
              label='fold %d (AUPR = %0.4f)' % (i, average_precision))
 
@@ -236,7 +233,7 @@ while counter0 < 5:
 
 
 
-# # 画均值
+
 mean_P = np.mean(Ps, axis=0)
 print(mean_P)
 mean_RPs = np.mean(RPs, axis=0)
@@ -245,7 +242,7 @@ std_RPs = np.std(RPs)
 plt.plot(mean_P, mean_R, color='purple',
          label=r'Mean (AUPR = %0.4f)' % (mean_RPs),
          lw=2, alpha=1)
-# MyEnlarge(0, 0.7, 0.25, 0.25, 0.1, 0, 2, mean_P, mean_R, 2, colorlist[1])
+
 
 
 PAndR = []
@@ -264,9 +261,9 @@ plt.ylabel('Precision', fontsize=16)
 plt.ylim([0.0, 1.0])
 plt.xlim([0.0, 1.0])
 plt.title('2-class Precision-Recall curve: AP={0:0.4f}'.format(mean_RPs))
-# 画网格
+
 plt.grid(linestyle='-')
-# 画对角线
+
 plt.plot([1, 0], [0, 1], color='navy', lw=2, linestyle='--')
 plt.legend(bbox_to_anchor=(0.45, 0.4))
 
